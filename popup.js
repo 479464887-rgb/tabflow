@@ -1,0 +1,127 @@
+// TabFlow - Popup
+let showWorkspaces = true;
+let currentTabs = [];
+
+document.addEventListener('DOMContentLoaded', async () => {
+  await loadAll();
+
+  document.getElementById('btn-save').addEventListener('click', async () => {
+    const name = prompt('工作区名称（可选）：', new Date().toLocaleString('zh-CN'));
+    if (name !== null) {
+      const resp = await chrome.runtime.sendMessage({ type: 'SAVE_WORKSPACE', name: name || undefined });
+      if (resp.success) await loadWorkspaces();
+    }
+  });
+
+  document.getElementById('btn-close-dup').addEventListener('click', async () => {
+    const resp = await chrome.runtime.sendMessage({ type: 'CLOSE_DUPLICATES' });
+    if (resp.closed > 0) {
+      alert(`已关闭 ${resp.closed} 个重复标签`);
+      await loadCurrentTabs();
+    } else {
+      alert('没有重复标签');
+    }
+  });
+
+  document.getElementById('btn-switch').addEventListener('click', () => {
+    showWorkspaces = !showWorkspaces;
+    document.getElementById('btn-switch').textContent = showWorkspaces ? '↕' : '↔';
+    document.querySelector('.section-header:nth-of-type(1)').textContent = showWorkspaces ? '💼 工作区' : '📋 当前标签';
+    loadAll();
+  });
+
+  document.getElementById('btn-settings').addEventListener('click', (e) => {
+    e.preventDefault();
+    chrome.runtime.openOptionsPage();
+  });
+});
+
+async function loadAll() {
+  await Promise.all([loadWorkspaces(), loadCurrentTabs()]);
+}
+
+async function loadWorkspaces() {
+  const resp = await chrome.runtime.sendMessage({ type: 'GET_WORKSPACES' });
+  const workspaces = resp.workspaces || [];
+  const container = document.getElementById('workspace-list');
+
+  if (!workspaces.length) {
+    container.innerHTML = '<div class="empty" style="padding:16px 0;font-size:11px">暂无工作区，点击"保存工作区"</div>';
+    return;
+  }
+
+  container.innerHTML = workspaces.map(w => `
+    <div class="ws-item">
+      <div class="ws-info">
+        <div class="ws-name">${escapeHtml(w.name)}</div>
+        <div class="ws-meta">${w.tabCount} 标签 · ${formatTime(w.createdAt)}</div>
+      </div>
+      <div class="ws-actions">
+        <button class="ws-btn" data-action="restore" data-id="${w.id}">打开</button>
+        <button class="ws-btn del" data-action="delete" data-id="${w.id}">✕</button>
+      </div>
+    </div>
+  `).join('');
+
+  container.querySelectorAll('[data-action="restore"]').forEach(b => {
+    b.addEventListener('click', async () => {
+      await chrome.runtime.sendMessage({ type: 'RESTORE_WORKSPACE', id: b.dataset.id });
+    });
+  });
+  container.querySelectorAll('[data-action="delete"]').forEach(b => {
+    b.addEventListener('click', async () => {
+      await chrome.runtime.sendMessage({ type: 'DELETE_WORKSPACE', id: b.dataset.id });
+      await loadWorkspaces();
+    });
+  });
+}
+
+async function loadCurrentTabs() {
+  const resp = await chrome.runtime.sendMessage({ type: 'GET_CURRENT_TABS' });
+  currentTabs = resp.tabs || [];
+  const container = document.getElementById('tab-list');
+
+  document.getElementById('tab-count').textContent = `${resp.count} 标签`;
+  document.getElementById('current-count').textContent = resp.count;
+
+  if (!currentTabs.length) {
+    container.innerHTML = '<div class="empty">无标签页</div>';
+    return;
+  }
+
+  container.innerHTML = currentTabs.map(t => {
+    const badges = [];
+    if (t.pinned) badges.push('<span class="tab-badge pin">📌</span>');
+    if (t.audible) badges.push('<span class="tab-badge audio">🔊</span>');
+    const active = t.active ? ' active' : '';
+    return `
+      <div class="tab-item${active}" data-tab-id="${t.id}">
+        <img class="favicon" src="${t.favIconUrl || ''}" onerror="this.style.display='none'" width="16" height="16">
+        <span class="tab-title" title="${escapeHtml(t.title)}">${escapeHtml(t.title)}</span>
+        ${badges.join('')}
+      </div>`;
+  }).join('');
+
+  container.querySelectorAll('.tab-item').forEach(el => {
+    el.addEventListener('click', async () => {
+      const tabId = parseInt(el.dataset.tabId);
+      await chrome.runtime.sendMessage({ type: 'SWITCH_TAB', tabId });
+      window.close();
+    });
+  });
+}
+
+function formatTime(ts) {
+  const d = new Date(ts);
+  const now = new Date();
+  const diff = now - d;
+  if (diff < 3600000) return `${Math.floor(diff / 60000)}分钟前`;
+  if (diff < 86400000) return `${Math.floor(diff / 3600000)}小时前`;
+  return `${d.getMonth() + 1}/${d.getDate()}`;
+}
+
+function escapeHtml(s) {
+  const div = document.createElement('div');
+  div.textContent = s;
+  return div.innerHTML;
+}
