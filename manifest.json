@@ -4,12 +4,20 @@
   "version": "1.0.0",
   "description": "标签页工作区管理器 — 一键保存/恢复窗口，搜索标签，去重整理",
   "homepage_url": "https://479464887-rgb.github.io/tabflow/",
-  "author": {"email": "tulv202900@163.com"},
-  "permissions": ["tabs", "tabGroups", "storage", "commands"],
-  "host_permissions": ["<all_urls>"],
+  "author": {
+    "email": "tulv202900@163.com"
+  },
+  "permissions": [
+    "tabs",
+    "tabGroups",
+    "storage",
+    "commands"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
   "background": {
-    "service_worker": "background.js",
-    "type": "module"
+    "service_worker": "background.js"
   },
   "action": {
     "default_popup": "popup.html",
