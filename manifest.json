@@ -1,5 +1,6 @@
 {
   "manifest_version": 3,
+  "minimum_chrome_version": "88",
   "name": "TabFlow",
   "version": "1.0.0",
   "description": "标签页工作区管理器 — 一键保存/恢复窗口，搜索标签，去重整理",
