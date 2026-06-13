@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y=".9em" font-size='90'>🛠</text></svg>">
-<title>TabFlow - Privacy Policy</title>
+<title>TabFlow - 隐私政策</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;color:#c9d1d9;background:#0d1117;max-width:800px;margin:40px auto;padding:0 20px;line-height:1.8}
@@ -13,11 +13,11 @@ a{color:#58a6ff}footer{margin-top:40px;padding-top:20px;border-top:1px solid #30
 *:focus-visible{outline:2px solid #58a6ff;outline-offset:2px}::selection{background:rgba(88,166,255,0.3);color:#fff}</style>
 </head>
 <body>
-<h1>📑 TabFlow Privacy Policy</h1>
-<p><strong>June 4, 2026</strong></p>
-<h2>Data Storage</h2><p>All workspaces and settings are stored only in your local browser. We do not upload any data.</p>
-<h2>Permissions</h2><ul><li><strong>tabs</strong>：Read tab info in current window</li><li><strong>tabGroups</strong>：Read tab groups</li><li><strong>storage</strong>：Save workspaces</li></ul>
-<h2>Contact</h2><p>tulv202900@163.com</p>
+<h1>📑 TabFlow 隐私政策</h1>
+<p><strong>2026年6月4日</strong></p>
+<h2>数据存储</h2><p>所有工作区和设置仅存储在本地浏览器。我们不上传任何数据。</p>
+<h2>权限</h2><ul><li><strong>tabs</strong>：读取当前窗口标签页信息</li><li><strong>tabGroups</strong>：读取标签分组</li><li><strong>storage</strong>：保存工作区</li></ul>
+<h2>联系</h2><p>tulv202900@163.com</p>
 <footer><p>TabFlow © 2026</p></footer>
 </body>
 </html>

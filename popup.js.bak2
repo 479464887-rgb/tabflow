@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadAll();
 
   document.getElementById('btn-save').addEventListener('click', async () => {
-    const name = prompt('Workspace name (optional):', new Date().toLocaleString('en-US'));
+    const name = prompt('Workspaces名称（可选）：', new Date().toLocaleString('zh-CN'));
     if (name !== null) {
       const resp = await chrome.runtime.sendMessage({ type: 'SAVE_WORKSPACE', name: name || undefined });
       if (resp.success) await loadWorkspaces();
@@ -16,17 +16,17 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('btn-close-dup').addEventListener('click', async () => {
     const resp = await chrome.runtime.sendMessage({ type: 'CLOSE_DUPLICATES' });
     if (resp.closed > 0) {
-      alert(`Closed ${resp.closed} duplicate tabs`);
+      alert(`已Close ${resp.closed} 个重复tabs`);
       await loadCurrentTabs();
     } else {
-      alert('No duplicate tabs');
+      alert('没有重复tabs');
     }
   });
 
   document.getElementById('btn-switch').addEventListener('click', () => {
     showWorkspaces = !showWorkspaces;
     document.getElementById('btn-switch').textContent = showWorkspaces ? '↕' : '↔';
-    document.querySelector('.section-header:nth-of-type(1)').textContent = showWorkspaces ? '💼 Workspaces' : '📋 Current Tabs';
+    document.querySelector('.section-header:nth-of-type(1)').textContent = showWorkspaces ? '💼 Workspaces' : '📋 当前tabs';
     loadAll();
   });
 
@@ -46,7 +46,7 @@ async function loadWorkspaces() {
   const container = document.getElementById('workspace-list');
 
   if (!workspaces.length) {
-    container.innerHTML = '<div class="empty" style="padding:16px 0;font-size:11px">No workspaces. Click "Save Workspace"</div>';
+    container.innerHTML = '<div class="empty" style="padding:16px 0;font-size:11px">暂无Workspaces，点击"Save workspaces"</div>';
     return;
   }
 
@@ -85,7 +85,7 @@ async function loadCurrentTabs() {
   document.getElementById('current-count').textContent = resp.count;
 
   if (!currentTabs.length) {
-    container.innerHTML = '<div class="empty">No tabs</div>';
+    container.innerHTML = '<div class="empty">无tabs页</div>';
     return;
   }
 
@@ -115,8 +115,8 @@ function formatTime(ts) {
   const d = new Date(ts);
   const now = new Date();
   const diff = now - d;
-  if (diff < 3600000) return `${Math.floor(diff / 60000)} minutes ago`;
-  if (diff < 86400000) return `${Math.floor(diff / 3600000)} hours ago`;
+  if (diff < 3600000) return `${Math.floor(diff / 60000)}minutes前`;
+  if (diff < 86400000) return `${Math.floor(diff / 3600000)}hours前`;
   return `${d.getMonth() + 1}/${d.getDate()}`;
 }
 

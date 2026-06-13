@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadAll();
 
   document.getElementById('btn-save').addEventListener('click', async () => {
-    const name = prompt('Workspace name (optional):', new Date().toLocaleString('en-US'));
+    const name = prompt('工作区名称（可选）：', new Date().toLocaleString('zh-CN'));
     if (name !== null) {
       const resp = await chrome.runtime.sendMessage({ type: 'SAVE_WORKSPACE', name: name || undefined });
       if (resp.success) await loadWorkspaces();
@@ -16,17 +16,17 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('btn-close-dup').addEventListener('click', async () => {
     const resp = await chrome.runtime.sendMessage({ type: 'CLOSE_DUPLICATES' });
     if (resp.closed > 0) {
-      alert(`Closed ${resp.closed} duplicate tabs`);
+      alert(`已关闭 ${resp.closed} 个重复标签`);
       await loadCurrentTabs();
     } else {
-      alert('No duplicate tabs');
+      alert('没有重复标签');
     }
   });
 
   document.getElementById('btn-switch').addEventListener('click', () => {
     showWorkspaces = !showWorkspaces;
     document.getElementById('btn-switch').textContent = showWorkspaces ? '↕' : '↔';
-    document.querySelector('.section-header:nth-of-type(1)').textContent = showWorkspaces ? '💼 Workspaces' : '📋 Current Tabs';
+    document.querySelector('.section-header:nth-of-type(1)').textContent = showWorkspaces ? '💼 工作区' : '📋 当前标签';
     loadAll();
   });
 
@@ -46,7 +46,7 @@ async function loadWorkspaces() {
   const container = document.getElementById('workspace-list');
 
   if (!workspaces.length) {
-    container.innerHTML = '<div class="empty" style="padding:16px 0;font-size:11px">No workspaces. Click "Save Workspace"</div>';
+    container.innerHTML = '<div class="empty" style="padding:16px 0;font-size:11px">暂无工作区，点击"保存工作区"</div>';
     return;
   }
 
@@ -54,10 +54,10 @@ async function loadWorkspaces() {
     <div class="ws-item">
       <div class="ws-info">
         <div class="ws-name">${escapeHtml(w.name)}</div>
-        <div class="ws-meta">${w.tabCount} tabs · ${formatTime(w.createdAt)}</div>
+        <div class="ws-meta">${w.tabCount} 标签 · ${formatTime(w.createdAt)}</div>
       </div>
       <div class="ws-actions">
-        <button class="ws-btn" data-action="restore" data-id="${w.id}">Open</button>
+        <button class="ws-btn" data-action="restore" data-id="${w.id}">打开</button>
         <button class="ws-btn del" data-action="delete" data-id="${w.id}">✕</button>
       </div>
     </div>
@@ -81,11 +81,11 @@ async function loadCurrentTabs() {
   currentTabs = resp.tabs || [];
   const container = document.getElementById('tab-list');
 
-  document.getElementById('tab-count').textContent = `${resp.count} tabs`;
+  document.getElementById('tab-count').textContent = `${resp.count} 标签`;
   document.getElementById('current-count').textContent = resp.count;
 
   if (!currentTabs.length) {
-    container.innerHTML = '<div class="empty">No tabs</div>';
+    container.innerHTML = '<div class="empty">无标签页</div>';
     return;
   }
 
@@ -115,8 +115,8 @@ function formatTime(ts) {
   const d = new Date(ts);
   const now = new Date();
   const diff = now - d;
-  if (diff < 3600000) return `${Math.floor(diff / 60000)} minutes ago`;
-  if (diff < 86400000) return `${Math.floor(diff / 3600000)} hours ago`;
+  if (diff < 3600000) return `${Math.floor(diff / 60000)}分钟前`;
+  if (diff < 86400000) return `${Math.floor(diff / 3600000)}小时前`;
   return `${d.getMonth() + 1}/${d.getDate()}`;
 }
 

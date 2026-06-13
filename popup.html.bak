@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -49,19 +49,19 @@ footer a{color:#58a6ff;text-decoration:none;font-size:11px}
 </header>
 
 <div class="toolbar">
-  <button class="btn primary" id="btn-save">💾 Save workspaces</button>
-  <button class="btn" id="btn-close-dup">🧹 Dedup</button>
-  <button class="btn warn" id="btn-switch" title="Switch Mode">↕</button>
+  <button class="btn primary" id="btn-save">💾 保存工作区</button>
+  <button class="btn" id="btn-close-dup">🧹 去重</button>
+  <button class="btn warn" id="btn-switch" title="切换模式">↕</button>
 </div>
 
-<div class="section-header">💼 Workspaces</div>
+<div class="section-header">💼 工作区</div>
 <div id="workspace-list"></div>
 
-<div class="section-header">📋 Current Tabs (<span id="current-count">0</span>)</div>
+<div class="section-header">📋 当前标签 (<span id="current-count">0</span>)</div>
 <div id="tab-list"></div>
 
 <footer>
-  <a href="#" id="btn-settings">⚙️ Settings</a>
+  <a href="#" id="btn-settings">⚙️ 设置</a>
   <span style="font-size:11px;color:#8b949e">Ctrl+Shift+Space</span>
 </footer>
 

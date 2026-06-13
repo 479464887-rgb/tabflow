@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>TabFlow · Settings</title>
+<title>TabFlow · 设置</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;color:#c9d1d9;background:#0d1117;max-width:500px;margin:40px auto;padding:0 20px}
@@ -22,16 +22,16 @@ h1{font-size:22px;color:#58a6ff;margin-bottom:24px}
 </style>
 </head>
 <body>
-<h1>📑 TabFlow Settings</h1>
+<h1>📑 TabFlow 设置</h1>
 <div class="card">
-  <h2>Storage Settings</h2>
+  <h2>存储设置</h2>
   <div class="field">
-    <label>Max Workspaces</label>
+    <label>最大工作区数量</label>
     <input type="number" id="max-workspaces" min="5" max="100" value="20">
   </div>
 </div>
 <div class="card">
-  <button class="btn" id="save">SaveSettings</button>
+  <button class="btn" id="save">保存设置</button>
   <span id="status"></span>
 </div>
 <script src="options.js"></script>
